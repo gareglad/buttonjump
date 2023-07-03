@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Jump</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+       $(document).ready(function() {     
+
+            // Create a new Date object
+            var currentTime = new Date();
+
+            // Get the hours, minutes, seconds, and AM/PM indicator
+            var hours = currentTime.getHours();
+            var minutes = currentTime.getMinutes();
+            var seconds = currentTime.getSeconds();
+            var indicator = hours >= 12 ? 'PM' : 'AM';
+
+            // Convert to 12-hour format
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Handle midnight (0 hours)
+
+            // Pad the minutes and seconds with leading zeros if necessary
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            // Combine the hours, minutes, seconds, and indicator
+            //var timeString = hours + ':' + minutes + ':' + seconds + ' ' + indicator;
+            var timeString = hours + ':' + minutes + ' '+ indicator;
+
+
+            // Set the time string as the text of an element (e.g., <div id="time"></div>)
+           // $('#time').text(timeString);
+
+
+            var start_time = timeString;
+            var start_unix = currentTime.getTime();
+
+
+            // Step 1: Retrieve the array from local storage
+            var storedArray = JSON.parse(localStorage.getItem('myArray')) || [];
+
+            var tableBody = $('#scoretable tbody');
+  
+            // Loop through the array
+            $.each(storedArray, function(index, item) {
+                // Create a new table row
+                var row = $('<tr>');
+                
+                // Create table data cells and append them to the row
+                $('<th>').text(item[0]).appendTo(row);
+                $('<td>').text(item[1]).appendTo(row);
+                $('<td>').text(item[2]).appendTo(row);
+                $('<td>').text(item[3]).appendTo(row);
+                
+                // Append the row to the table body
+                row.prependTo(tableBody);
+            });
+
+            var first_row = $('<tr><th><div id="time">'+start_time+'</div></th> <td><div id="score" class="now">0</div></td><td><div id="highscore" class="now">56</div></td><td><div id="totalscore" class="now">0</div></td></tr>');
+            first_row.prependTo(tableBody);
+            
+            var Storagetotalscore = localStorage.getItem('totalscore');
+            if(Storagetotalscore){
+                $('#totalscore').html(Storagetotalscore);
+            }else{
+                Storagetotalscore = 0;
+                localStorage.setItem('totalscore', Storagetotalscore);
+                $('#totalscore').html(0);
+            }
+
+            var Storagehighscore = localStorage.getItem('highscore');
+            if(Storagehighscore){
+                $('#highscore').html(Storagehighscore);
+            }else{
+                localStorage.setItem('highscore', 0);
+                $('#highscore').html(0);
+            }
+
+            localStorage.setItem('score', 0);
+
+            $(document).on('click', '.buttons', function() {
+
+
+                var windowWidth = $(window).width() - 100;
+                var windowHeight = $(window).height() - 100;
+                
+                var newLeftPos = Math.floor(Math.random() * windowWidth);
+                var newTopPos = Math.floor(Math.random() * windowHeight);
+
+                $(this).css({
+                    left: newLeftPos,
+                    top: newTopPos
+                });
+
+                var score = localStorage.getItem('score');
+                var new_score = parseInt(score) + 1;
+
+                $('#score').html(new_score);
+                localStorage.setItem('score', new_score); 
+
+                var highscore = localStorage.getItem('highscore');
+                if(highscore < new_score){
+                    localStorage.setItem('highscore', new_score); 
+                    $('#highscore').html(new_score);
+                    highscore = new_score;
+                }
+
+                var new_totalscore = parseInt(localStorage.getItem('totalscore')) + 1;
+
+                localStorage.setItem('totalscore', new_totalscore);
+
+
+                var newValue = [start_time,new_score,highscore,new_totalscore];
+
+                if(new_score == 1){
+                    storedArray.push(newValue);
+                }else{
+
+                    var lastElementIndex = storedArray.length - 1;
+
+                    storedArray[lastElementIndex] = newValue;
+
+                }
+
+                localStorage.setItem('myArray', JSON.stringify(storedArray));
+
+            });
+
+        });
+
+
+    </script>
+    <style>
+        .now {
+            font-size: 50px; */
+        } 
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+            th {
+            background-color: #f2f2f2;
+        }
+
+            th:first-child, td:first-child {
+            font-weight: bold;
+        }
+
+            tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+
+        .buttons {
+            background-color: black;
+            position: absolute;
+            top: 50%;
+            font-size: 25px;
+            border: black;
+            width: auto;
+        }
+
+        .buttons:nth-of-type(2) {
+            background-color: red;
+            color: black;
+            border: red; 
+            right: 8px;
+        }
+
+        .buttons th {
+            text-align: center;
+            width: 100px;
+            height: 100px;
+        }
+
+        .highlight{
+            border: 3px solid red;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <table class="buttons" >
+        <thead>
+          <tr>
+            <th>Click</th>
+          </tr>
+        </thead>
+    </table>
+    <table class="buttons" >
+        <thead>
+          <tr>
+            <th>Click</th>
+          </tr>
+        </thead>
+    </table>
+
+
+    <table id="scoretable">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Score</th>
+            <th>High Score</th>
+            <th>Total Score</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+      
+    
+</body>
+</html>
+
