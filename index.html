@@ -19,6 +19,11 @@
             var seconds = currentTime.getSeconds();
             var indicator = hours >= 12 ? 'PM' : 'AM';
 
+            var day = currentTime.getDay();
+            var month = currentTime.getMonth();
+            var year = currentTime.getFullYear();
+            var current_date = month + '/' + day + '/' + year;
+
             // Convert to 12-hour format
             hours = hours % 12;
             hours = hours ? hours : 12; // Handle midnight (0 hours)
@@ -29,7 +34,7 @@
 
             // Combine the hours, minutes, seconds, and indicator
             //var timeString = hours + ':' + minutes + ':' + seconds + ' ' + indicator;
-            var timeString = hours + ':' + minutes + ' '+ indicator;
+            var timeString = hours + ':' + minutes + ' '+ indicator + '<br>' + current_date;
 
 
             // Set the time string as the text of an element (e.g., <div id="time"></div>)
@@ -51,7 +56,7 @@
                 var row = $('<tr>');
                 
                 // Create table data cells and append them to the row
-                $('<th>').text(item[0]).appendTo(row);
+                $('<th>').html(item[0]).appendTo(row);
                 $('<td>').text(item[1]).appendTo(row);
                 $('<td>').text(item[2]).appendTo(row);
                 $('<td>').text(item[3]).appendTo(row);
