@@ -265,6 +265,9 @@ data[item[0].split("<br>")[1]] = item[1];
  day = item[0].split("<br>")[1];
  hour = item[0].split(":")[0]+':00 ';
  var day_hour = hour+''+day;
+if(!day){
+ day = '10/5/2023';
+}
 if(data2[day_hour]){
 data2[day_hour] = data2[day_hour] + item[1];
 }else{
@@ -315,7 +318,7 @@ new Chart("myChart", {
 });
 const xValues4 = ["Italy", "France", "Spain", "USA", "Argentina"];
 const yValues4 = [55, 49, 44, 24, 15];
-const barColors2 = ["red", "green","blue","orange","brown"];
+const barColors2 = "red";
 
 new Chart("myChart2", {
   type: "bar",
