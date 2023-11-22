@@ -56,7 +56,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
             $.each(storedArray, function(index, item) {
 //console.log(item[0].length);
 if(item[0].length < 10){
-item[0] = item[0]+' 9/3/2023';
+storedArray[index] = item[0]+' 9/3/2023';
 //storedArray.splice(index,index+1);
 //storedArray.splice(index, index);
 //localStorage.setItem(storedArray, myArray);
