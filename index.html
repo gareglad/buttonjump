@@ -253,6 +253,9 @@ const xValues3 = [];
 const yValues3 = [];
 var day = '';
 var hour = '';
+var barColors3 = ["red", "green","blue","orange","brown"];
+var barColors4 = [];
+var x = 0;
 $.each(storedArray, function(index, item) {
 if(data[item[0].split("<br>")[1]]){
 data[item[0].split("<br>")[1]] = data[item[0].split("<br>")[1]] + item[1];
@@ -272,6 +275,13 @@ if(data2[day_hour]){
 data2[day_hour] = data2[day_hour] + item[1];
 }else{
 data2[day_hour] = item[1];
+}
+//$('body').append(barColors4[x])
+console.log(barColors3[x]);
+barColors4.push(barColors3[x]);
+x++;
+if(x==5){
+x=0
 }
 
  //$('body').append(item[0].split("<br>")[1]);
@@ -325,7 +335,7 @@ new Chart("myChart2", {
   data: {
     labels: xValues3,
     datasets: [{
-      backgroundColor: barColors2,
+      backgroundColor: barColors4,
       data: yValues3
     }]
   },
