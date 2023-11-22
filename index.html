@@ -51,9 +51,16 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
             var storedArray = JSON.parse(localStorage.getItem('myArray')) || [];
 
             var tableBody = $('#scoretable tbody');
-  
+  //localStorage.removeItem(myArray);
             // Loop through the array
             $.each(storedArray, function(index, item) {
+//console.log(item[0].length);
+if(item[0].length < 10){
+item[0] = item[0]+' 9/3/2023';
+//storedArray.splice(index,index+1);
+//storedArray.splice(index, index);
+//localStorage.setItem(storedArray, myArray);
+}
                 // Create a new table row
                 var row = $('<tr>');
                 
@@ -268,7 +275,8 @@ data[item[0].split("<br>")[1]] = item[1];
  day = item[0].split("<br>")[1];
  hour = item[0].split(":")[0]+':00 ';
  var day_hour = hour+''+day;
-if(day == 'undefined'){
+console.log(day);
+if(!day){
  day = '10/5/2023';
 }
 if(data2[day_hour]){
