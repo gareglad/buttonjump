@@ -197,14 +197,16 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         .highlight{
             border: 3px solid red;
         }
-        .table-wrapper{
+.table-wrapper{
  height: 100vh !important;
  overflow: scroll !important;
 
 }
+        
     </style>
 </head>
 <body>
+
 <div class="table-wrapper">
     <table class="buttons" >
         <thead>
@@ -235,25 +237,44 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
         </tbody>
       </table>
-    </div>
+</div>
       <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
-   
+   <canvas id="myChart2" style="width:100%;max-width:700px"></canvas>
 
 <script>
  var storedArray = JSON.parse(localStorage.getItem('myArray')) || [];
 
-
+//var splitText=divtxt.split("unfortunate");
 const data = {};
+const data2 = {};
 const xValues2 = [];
 const yValues2 = [];
+const xValues3 = [];
+const yValues3 = [];
+var day = '';
+var hour = '';
 $.each(storedArray, function(index, item) {
 if(data[item[0].split("<br>")[1]]){
 data[item[0].split("<br>")[1]] = data[item[0].split("<br>")[1]] + item[1];
 }else{
 data[item[0].split("<br>")[1]] = item[1];
 }
+
+
+
+ day = item[0].split("<br>")[1];
+ hour = item[0].split(":")[0]+':00 ';
+ var day_hour = hour+''+day;
+if(data2[day_hour]){
+data2[day_hour] = data2[day_hour] + item[1];
+}else{
+data2[day_hour] = item[1];
+}
+
  //$('body').append(item[0].split("<br>")[1]);
+
 });
+
 
 
  //$('body').append(data);
@@ -264,6 +285,12 @@ $.each(data, function(index, item) {
  yValues2.push(item);
 });
 
+$.each(data2, function(index, item) {
+
+ //$('body').append(item);
+ xValues3.push(index);
+ yValues3.push(item);
+});
 
 const xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
 const yValues = [55, 49, 44, 24, 15];
@@ -286,7 +313,27 @@ new Chart("myChart", {
     }
   }
 });
+const xValues4 = ["Italy", "France", "Spain", "USA", "Argentina"];
+const yValues4 = [55, 49, 44, 24, 15];
+const barColors2 = ["red", "green","blue","orange","brown"];
 
+new Chart("myChart2", {
+  type: "bar",
+  data: {
+    labels: xValues3,
+    datasets: [{
+      backgroundColor: barColors2,
+      data: yValues3
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: ""
+    }
+  }
+});
 
 </script>
 </body>
